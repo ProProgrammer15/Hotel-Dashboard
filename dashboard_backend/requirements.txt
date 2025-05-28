@@ -1,0 +1,8 @@
+fastapi
+pydantic-settings
+uvicorn
+sqlalchemy
+aiosqlite
+databases
+sqlmodel
+python-multipart
