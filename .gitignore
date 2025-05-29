@@ -1,3 +1,7 @@
 .idea
 dashboard_backend/venv
 dashboard_backend/__pycache__
+dashboard_backend/app/tests/rooms/__pycache__
+dashboard_backend/.pytest_cache
+*.pyc
+__pycache__/

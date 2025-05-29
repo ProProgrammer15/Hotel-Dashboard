@@ -2,7 +2,7 @@ import json
 from typing import List
 from fastapi import HTTPException
 
-def parse_facilities(facilities_raw: str) -> List[str]:
+async def parse_facilities(facilities_raw: str) -> List[str]:
     try:
         facilities = json.loads(facilities_raw)
         if isinstance(facilities, list) and all(isinstance(f, str) for f in facilities):

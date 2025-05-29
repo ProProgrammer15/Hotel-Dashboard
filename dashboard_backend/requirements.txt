@@ -6,3 +6,6 @@ aiosqlite
 databases
 sqlmodel
 python-multipart
+pytest-asyncio
+httpx
+pytest-cov
