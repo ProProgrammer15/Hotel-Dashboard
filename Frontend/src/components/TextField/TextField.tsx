@@ -46,11 +46,9 @@ const TextField: React.FC<TextFieldProps> = ({
 
   const uniqueId = React.useId();
 
-  // Use controlledValue if provided, else internal state
   const inputValue =
     controlledValue !== undefined ? controlledValue : internalValue;
 
-  // Handle text or textarea change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -63,13 +61,12 @@ const TextField: React.FC<TextFieldProps> = ({
     }
   };
 
-  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
 
     const files = e.target.files;
     if (files && files.length > 0) {
-      setFileName(files[0].name); // show only first file name
+      setFileName(files[0].name);
 
       if (onFileSelect) {
         onFileSelect(files);
@@ -81,7 +78,9 @@ const TextField: React.FC<TextFieldProps> = ({
     <div className="flex flex-col w-full">
       {label && (
         <label
-          className={`mb-1 font-medium flex items-center space-x-2 cursor-pointer ${
+          className={`mb-1 ${
+            type === "file" ? "font-light" : ""
+          } flex items-center space-x-2 cursor-pointer ${
             type === "file" ? "text-primary" : "text-dark"
           }`}
           htmlFor={type === "file" ? uniqueId : type}

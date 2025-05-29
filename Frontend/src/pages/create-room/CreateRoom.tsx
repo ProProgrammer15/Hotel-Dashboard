@@ -6,14 +6,19 @@ import { SquarePlusIcon } from "lucide-react";
 
 const RoomDetailsPage: React.FC = () => {
   const [title, setTitle] = useState("");
+  const [titleError, setTitleError] = useState(false);
   const [description, setDescription] = useState("");
+  const [descriptionError, setDescriptionError] = useState(false);
   const [image, setImage] = useState<File | null>(null);
+  const [imageError, setImageError] = useState(false);
   const [facilities, setFacilities] = useState<string[]>([""]);
+  const [facilityError, setFacilityError] = useState(false);
 
   // Handle image file upload
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
+  const handleImageChange = (files: FileList | null) => {
+    if (files && files.length > 0) {
+      setImage(files[0]);
+      console.log(files[0].name);
     }
   };
 
@@ -38,14 +43,15 @@ const RoomDetailsPage: React.FC = () => {
       image,
       facilities,
     });
-    alert("Form data logged in console. Implement PDF generation here.");
+    if (!title) setTitleError(true);
+    if (!description) setDescriptionError(true);
+    if (!image) setImageError(true);
+    if (!facilities) setFacilityError(true);
   };
 
   return (
     <div className="m -2 p-4 min-h-screen">
-      <h1 style={{ fontWeight: "bold", fontSize: 28, marginBottom: 20 }}>
-        Room details
-      </h1>
+      <h1 className="font-bold text-2xl mb-2">Room details</h1>
       <a
         href="/"
         className="text-primary font-medium text-sm inline-flex items-center gap-1 hover:underline cursor-pointer"
@@ -72,7 +78,13 @@ const RoomDetailsPage: React.FC = () => {
         />
 
         <div className="m-2">
-          <TextField label="ADD IMAGE" icon={<SquarePlusIcon />} type="file" />
+          <TextField
+            multiple={true}
+            onFileSelect={handleImageChange} // Pass the correct function directly here
+            label="ADD IMAGE"
+            icon={<SquarePlusIcon />}
+            type="file"
+          />
         </div>
       </div>
 
@@ -88,24 +100,28 @@ const RoomDetailsPage: React.FC = () => {
             onChange={(e) => handleFacilityChange(idx, e.target.value)}
           />
         ))}
-        <Button onClick={addFacilityField} label=" Add Facility" />
+        <label
+          role="button"
+          className="cursor-pointer text-primary inline-flex font-light items-center space-x-2"
+          onClick={addFacilityField}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              addFacilityField();
+            }
+          }}
+        >
+          <SquarePlusIcon />
+          <span>ADD FACILITY</span>
+        </label>
       </div>
 
-      <button
+      <Button
+        label="Create And Generate PDF"
+        variant="primary"
         onClick={handleSubmit}
-        style={{
-          backgroundColor: "#e06666",
-          color: "white",
-          padding: "12px 24px",
-          border: "none",
-          borderRadius: 4,
-          fontWeight: "bold",
-          fontSize: 14,
-          cursor: "pointer",
-        }}
-      >
-        CREATE AND GENERATE PDF
-      </button>
+      />
     </div>
   );
 };
