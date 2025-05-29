@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 
 type TextFieldProps = {
-  type: "text" | "description" | "file";
+  type: "text" | "description" | "file" | "button";
   label?: string;
   icon?: React.ReactNode;
   placeholder?: string;
@@ -40,6 +40,7 @@ const TextField: React.FC<TextFieldProps> = ({
     text: "text-base h-10 cursor-text",
     description: "text-sm min-h-[80px] resize-none cursor-text",
     file: "cursor-pointer",
+    button: "cursor-pointer",
   }[type];
 
   const inputClassNames = `${baseInputStyles} ${typeStyles} ${className}`;
@@ -82,7 +83,7 @@ const TextField: React.FC<TextFieldProps> = ({
       {label && (
         <label
           className={`mb-1 font-medium flex items-center space-x-2 cursor-pointer ${
-            type === "file" ? "text-primary" : "text-dark"
+            type === "file" || type === "button" ? "text-primary" : "text-dark"
           }`}
           htmlFor={type === "file" ? uniqueId : type}
           aria-disabled={disabled}
@@ -122,7 +123,7 @@ const TextField: React.FC<TextFieldProps> = ({
           value={inputValue}
           onChange={handleInputChange}
         />
-      ) : (
+      ) : type === "description" ? (
         <textarea
           id={type}
           className={inputClassNames}
@@ -132,6 +133,8 @@ const TextField: React.FC<TextFieldProps> = ({
           onChange={handleInputChange}
           rows={4}
         />
+      ) : (
+        <></>
       )}
     </div>
   );
