@@ -7,3 +7,4 @@ dashboard_backend/app/config/__pycache__
 dashboard_backend/.pytest_cache
 *.pyc
 */__pycache__/
+Frotend/node_modules
