@@ -1,13 +1,26 @@
 "use client";
-import { useState } from "react";
-import useRoomStore from "../../stores/useDashboardStore";
+import { useState, useEffect } from "react";
 import Button from "../../components/Buttons/Buttons";
 import { useNavigate } from "react-router-dom";
+import { getRoomsListing } from "../../api";
 
 export const Dashboard = () => {
-  const { rooms } = useRoomStore();
+  const [rooms, setRooms] = useState([]);
   const navigate = useNavigate();
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+
+  useEffect(() => {
+    async function fetchRooms() {
+      const data = await getRoomsListing();
+      if (data) {
+        setRooms(data);
+      }
+    }
+    fetchRooms();
+  }, []);
+
+  const onRowClick = (roomId: string) => {
+    navigate(`/room/${roomId}`);
+  };
 
   return (
     <div className="m -2 p-4 min-h-screen">
@@ -45,21 +58,26 @@ export const Dashboard = () => {
           <tbody>
             {rooms.map((room, index) => (
               <tr
+                onClick={() => onRowClick(room?.id)}
                 key={room.id}
                 className={`border-b border-gray-100 font-merriweather hover:bg-gray-50 transition-colors ${
                   index === rooms.length - 1 ? "border-b-0" : ""
                 }`}
               >
                 <td className="py-4 px-6  font-medium font-merriweather text-gray-900">
-                  {room.name}
+                  {room.title}
                 </td>
                 <td className="py-4 px-6 text-gray-600 font-merriweather max-w-md">
                   {room.description}
                 </td>
-                <td className="py-4 px-6 text-gray-700">{room.facilities}</td>
-                <td className="py-4 px-6 text-gray-700">{room.created}</td>
                 <td className="py-4 px-6 text-gray-700">
-                  {room.updated || "–"}
+                  {Array.isArray(room.facilities)
+                    ? room.facilities.join(", ")
+                    : room.facilities}
+                </td>
+                <td className="py-4 px-6 text-gray-700">{room.created_at}</td>
+                <td className="py-4 px-6 text-gray-700">
+                  {room.updated_at || "–"}
                 </td>
               </tr>
             ))}

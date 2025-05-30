@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 
 type TextFieldProps = {
-  type: "text" | "description" | "file";
+  type: "text" | "description" | "file" | "button";
   label?: string;
   icon?: React.ReactNode;
   placeholder?: string;
@@ -40,15 +40,18 @@ const TextField: React.FC<TextFieldProps> = ({
     text: "text-base h-10 cursor-text",
     description: "text-sm min-h-[80px] resize-none cursor-text",
     file: "cursor-pointer",
+    button: "cursor-pointer",
   }[type];
 
   const inputClassNames = `${baseInputStyles} ${typeStyles} ${className}`;
 
   const uniqueId = React.useId();
 
+  // Use controlledValue if provided, else internal state
   const inputValue =
     controlledValue !== undefined ? controlledValue : internalValue;
 
+  // Handle text or textarea change
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -61,12 +64,13 @@ const TextField: React.FC<TextFieldProps> = ({
     }
   };
 
+  // Handle file input change
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
 
     const files = e.target.files;
     if (files && files.length > 0) {
-      setFileName(files[0].name);
+      setFileName(files[0].name); // show only first file name
 
       if (onFileSelect) {
         onFileSelect(files);
@@ -78,10 +82,8 @@ const TextField: React.FC<TextFieldProps> = ({
     <div className="flex flex-col w-full">
       {label && (
         <label
-          className={`mb-1 ${
-            type === "file" ? "font-light" : ""
-          } flex items-center space-x-2 cursor-pointer ${
-            type === "file" ? "text-primary" : "text-dark"
+          className={`mb-1 font-medium flex items-center space-x-2 cursor-pointer ${
+            type === "file" || type === "button" ? "text-primary" : "text-dark"
           }`}
           htmlFor={type === "file" ? uniqueId : type}
           aria-disabled={disabled}
@@ -121,7 +123,7 @@ const TextField: React.FC<TextFieldProps> = ({
           value={inputValue}
           onChange={handleInputChange}
         />
-      ) : (
+      ) : type === "description" ? (
         <textarea
           id={type}
           className={inputClassNames}
@@ -131,6 +133,8 @@ const TextField: React.FC<TextFieldProps> = ({
           onChange={handleInputChange}
           rows={4}
         />
+      ) : (
+        <></>
       )}
     </div>
   );

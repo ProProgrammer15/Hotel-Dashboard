@@ -9,6 +9,8 @@ type ButtonProps = {
   variant?: "primary" | "secondary" | "dark" | "neutral" | "white";
   size?: "small" | "medium" | "large";
   className?: string;
+  iconBefore?: boolean;
+  fullWidth?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
@@ -20,6 +22,8 @@ const Button: React.FC<ButtonProps> = ({
   variant = "primary",
   size = "medium",
   className = "",
+  iconBefore = true,
+  fullWidth = false,
 }) => {
   const variantStyles = {
     primary:
@@ -49,12 +53,25 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${baseStyles} ${variantStyles} ${
+      className={`${baseStyles} ${variantStyles} ${fullWidth ? "w-full" : ""} ${
         icon && !label ? iconOnlyStyles : sizeStyles
       } ${className} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
     >
-      {icon && <span className={label ? "ltr:mr-2 rtl:ml-2" : ""}>{icon}</span>}
-      {label && <span>{label}</span>}
+      {iconBefore ? (
+        <>
+          {icon && (
+            <span className={label ? "ltr:mr-2 rtl:ml-2" : ""}>{icon}</span>
+          )}
+          {label && <span>{label}</span>}
+        </>
+      ) : (
+        <>
+          <div className="flex items-center justify-between w-full">
+            {label && <span>{label}</span>}
+            {icon && <span>{icon}</span>}
+          </div>
+        </>
+      )}
     </button>
   );
 };
