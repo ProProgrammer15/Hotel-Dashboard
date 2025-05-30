@@ -32,7 +32,6 @@ const UpdateRoomPage = () => {
     try {
       const res = await updateRoom(id, title, description, facilities, image);
       if (res) {
-        console.log(res.data);
         alert("Room updated successfully!");
         navigate("/");
       } else {

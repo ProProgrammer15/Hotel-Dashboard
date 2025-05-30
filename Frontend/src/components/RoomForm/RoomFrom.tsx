@@ -14,6 +14,12 @@ interface RoomFormProps {
     description?: string;
     facilities?: string[];
   };
+  errors?: {
+    title?: string;
+    description?: string;
+    facilities?: string;
+    image?: string;
+  };
   onSubmit: (
     title: string,
     description: string,
@@ -27,6 +33,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
   initialData,
   onSubmit,
   isUpdateForm,
+  errors = {},
 }) => {
   const APIURL = import.meta.env.VITE_API_ENDPOINT;
   const [title, setTitle] = useState(initialData?.title || "");
@@ -45,12 +52,6 @@ const RoomForm: React.FC<RoomFormProps> = ({
     setDescription(initialData?.description || "");
     setFacilities(initialData?.facilities || [""]);
   }, [initialData]);
-
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      setImage(e.target.files[0]);
-    }
-  };
 
   const addFacilityField = () => {
     setFacilities((prev) => [...prev, ""]);
@@ -100,7 +101,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
           >
             ← back to rooms
           </a>
-          <div className="m-5 font-bold">
+          <div className="m-5">
             <div className="container flex justify-between items-center">
               <h3 className="font-sans">Room details</h3>
               {isUpdateForm && (
@@ -120,15 +121,24 @@ const RoomForm: React.FC<RoomFormProps> = ({
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              className={`border ${
+                errors.title ? "border-red-700" : "border-gray-300"
+              }`}
             />
-
+            {errors.title && <p className="text-red-700">{errors.title}</p>}
             <TextField
               label="Description"
               placeholder="Description"
               type="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              className={`border ${
+                errors.description ? "border-red-700" : "border-gray-300"
+              }`}
             />
+            {errors.description && (
+              <p className="text-red-700">{errors.description}</p>
+            )}
             {initialData?.image ? (
               <div className="m-2 flex flex-col items-start gap-2">
                 <div
@@ -141,7 +151,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
                   }}
                 >
                   <img
-                    src={`${APIURL}${initialData.image}`}
+                    src={`${APIURL}${initialData?.image}`}
                     alt="Room"
                     style={{
                       height: "100%",
@@ -154,8 +164,13 @@ const RoomForm: React.FC<RoomFormProps> = ({
                   label="UPDATE IMAGE"
                   icon={<SquarePlusIcon />}
                   type="file"
-                  onChange={handleImageChange}
+                  onFileSelect={(file) => {
+                    if (file) setImage(file);
+                  }}
+                  multiple={true}
+                  className={`border ${errors.image ? "border-red-500" : ""}`}
                 />
+                {errors.image && <p className="text-red-700">{errors.image}</p>}
               </div>
             ) : (
               <div className="m-2">
@@ -163,8 +178,13 @@ const RoomForm: React.FC<RoomFormProps> = ({
                   label="ADD IMAGE"
                   icon={<SquarePlusIcon />}
                   type="file"
-                  onChange={handleImageChange}
+                  onFileSelect={(file) => {
+                    if (file) setImage(file);
+                  }}
+                  multiple={true}
+                  className={`border ${errors.image ? "border-red-500" : ""}`}
                 />
+                {errors.image && <p className="text-red-700">{errors.image}</p>}
               </div>
             )}
           </div>
@@ -177,7 +197,9 @@ const RoomForm: React.FC<RoomFormProps> = ({
                 label="Facility"
                 placeholder="Facility detail"
                 value={facility}
-                className="mb-2"
+                className={`border ${
+                  errors.facilities ? "border-red-500" : "mb-2"
+                }`}
                 onChange={(e) => handleFacilityChange(idx, e.target.value)}
               />
             ))}
@@ -187,25 +209,13 @@ const RoomForm: React.FC<RoomFormProps> = ({
                 icon={<SquarePlusIcon />}
                 type="button"
               />
+              {errors.facilities && (
+                <p className="text-red-700">{errors.facilities}</p>
+              )}
             </div>
           </div>
 
-          <button
-            onClick={handleSubmit}
-            style={{
-              backgroundColor: "#e06666",
-              color: "white",
-              padding: "12px 24px",
-              border: "none",
-              borderRadius: 4,
-              fontWeight: "bold",
-              fontSize: 14,
-              cursor: "pointer",
-              marginTop: "10px",
-            }}
-          >
-            CREATE AND GENERATE PDF
-          </button>
+          <Button label="CREATE AND GENERATE PDF" onClick={handleSubmit} />
         </div>
       </div>
       <div className="w-full md:w-1/3 mt-30 md:mt-30">

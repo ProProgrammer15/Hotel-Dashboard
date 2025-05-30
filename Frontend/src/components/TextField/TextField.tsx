@@ -13,7 +13,7 @@ type TextFieldProps = {
   onChange?: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  onFileSelect?: (files: FileList | null) => void;
+  onFileSelect?: (files: File | null) => void;
 };
 
 const TextField: React.FC<TextFieldProps> = ({
@@ -33,8 +33,7 @@ const TextField: React.FC<TextFieldProps> = ({
   const [fileName, setFileName] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const baseInputStyles =
-    "w-full p-2.5 text-sm bg-gray-100 border-0 rounded-md";
+  const baseInputStyles = "w-full p-2.5 text-sm bg-gray-100 rounded-md";
 
   const typeStyles = {
     text: "text-base h-10 cursor-text",
@@ -73,7 +72,7 @@ const TextField: React.FC<TextFieldProps> = ({
       setFileName(files[0].name); // show only first file name
 
       if (onFileSelect) {
-        onFileSelect(files);
+        onFileSelect(files[0]);
       }
     }
   };
