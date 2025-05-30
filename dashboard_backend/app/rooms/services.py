@@ -13,7 +13,7 @@ ALLOWED_IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 
-def save_image(file: UploadFile) -> str:
+async def save_image(file: UploadFile) -> str:
     file_ext = os.path.splitext(file.filename)[1].lower()
     if file_ext not in ALLOWED_IMAGE_EXTENSIONS:
         raise HTTPException(status_code=400, detail="Unsupported image format.")
@@ -30,7 +30,7 @@ def save_image(file: UploadFile) -> str:
     return f"/{UPLOAD_DIR}/{filename}"
 
 
-def delete_image(path: str):
+async def delete_image(path: str):
     try:
         full_path = path.lstrip("/")
         if os.path.exists(full_path):
@@ -39,10 +39,10 @@ def delete_image(path: str):
         print(f"Warning: could not delete image: {e}")
 
 
-def create_room(db: Session, data: schemas.RoomBase, image: UploadFile) -> models.Room:
+async def create_room(db: Session, data: schemas.RoomBase, image: UploadFile) -> models.Room:
     try:
-        image_path = save_image(image) if image else None
-        room = models.Room(**data.dict(), image=image_path)
+        image_path = await save_image(image) if image else None
+        room = models.Room(**data.model_dump(), image=image_path)
         db.add(room)
         db.commit()
         db.refresh(room)
@@ -52,26 +52,27 @@ def create_room(db: Session, data: schemas.RoomBase, image: UploadFile) -> model
         raise HTTPException(status_code=500, detail="Database error occurred.")
 
 
-def get_rooms(db: Session) -> List[models.Room]:
+async def get_rooms(db: Session) -> List[models.Room]:
     return db.query(models.Room).all()
 
 
-def get_room(db: Session, room_id: str) -> Optional[models.Room]:
+async def get_room(db: Session, room_id: str) -> Optional[models.Room]:
     room = db.query(models.Room).filter(models.Room.id == room_id).first()
     return room
 
 
-def update_room(db: Session, room_id: str, data: schemas.RoomBase, image: UploadFile = None) -> Optional[models.Room]:
-    room = get_room(db, room_id)
+async def update_room(db: Session, room_id: str, data: schemas.RoomBase, image: UploadFile = None) -> Optional[models.Room]:
+    room = await get_room(db, room_id)
     if not room:
         return None
 
-    for key, value in data.dict().items():
-        setattr(room, key, value)
+    for key, value in data.model_dump().items():
+        if value not in [None, "", []]:
+            setattr(room, key, value)
 
     if image:
-        delete_image(room.image)
-        room.image = save_image(image)
+        await delete_image(room.image)
+        room.image = await save_image(image)
 
     try:
         db.commit()
@@ -82,12 +83,12 @@ def update_room(db: Session, room_id: str, data: schemas.RoomBase, image: Upload
         raise HTTPException(status_code=500, detail="Failed to update room.")
 
 
-def delete_room(db: Session, room_id: str) -> bool:
-    room = get_room(db, room_id)
+async def delete_room(db: Session, room_id: str) -> bool:
+    room = await get_room(db, room_id)
     if not room:
         return False
 
-    delete_image(room.image)
+    await delete_image(room.image)
     try:
         db.delete(room)
         db.commit()
