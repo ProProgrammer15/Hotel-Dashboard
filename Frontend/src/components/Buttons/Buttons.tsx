@@ -27,17 +27,17 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   const variantStyles = {
     primary:
-      "bg-primary text-white px-6 py-3 rounded-md font-medium transition-colors border-[1px] hover:shadow-lg",
+      "bg-primary text-white px-6 py-3 font-sans cursor-pointer font-light transition-colors border-[1px] hover:shadow-lg",
     neutral:
-      "bg-neutral text-white px-6 py-3 rounded-md font-medium transition-colors border-[1px] hover:shadow-lg",
+      "bg-neutral text-white px-6 py-3 cursor-pointer font-light transition-colors border-[1px] hover:shadow-lg",
     secondary:
-      "bg-secondary text-info-foreground hover:bg-info-dark hover:shadow-md",
+      "bg-secondary cursor-pointer font-light text-info-foreground hover:bg-info-dark hover:shadow-md",
     dark: "bg-dark text-white hover:bg-green-600 hover:shadow-md",
     white:
-      "bg-white text-muted-dark hover:bg-gray-200 hover:shadow-sm border border-gray-300",
+      "bg-white text-muted-dark cursor-pointer font-light hover:bg-gray-200 hover:shadow-sm border border-gray-300",
   }[variant];
 
-  const baseStyles = `rounded-lg font-semibold focus:outline-none inline-flex items-center justify-center transition duration-200 ease-in-out`;
+  const baseStyles = `focus:outline-none inline-flex items-center justify-center transition duration-200 ease-in-out`;
 
   const sizeStyles = {
     small: "px-2 py-1 text-sm",

@@ -1,17 +1,22 @@
 import React from "react";
+import { formatDate } from "../../utils/utils";
 
-const Dates: React.FC = () => {
+const Dates: React.FC = ({ createdAt, updatedAt }) => {
   return (
-    <div className="bg-[#c2bab2] p-4 rounded-md shadow-md">
-      <h3 className="text-gray-800 font-semibold mb-4">Dates</h3>
-      <div className="flex justify-between text-sm text-gray-700 space-y-2">
+    <div className="bg-neutral text-dark p-4">
+      <h3 className="font-sans text-2xl font-semibold mb-4">Dates</h3>
+      <div className="flex justify-between text-sm  space-y-2">
         <div>
           <p className="font-medium">Created</p>
-          <p>17/03/25</p>
+          <p className="font-merriweather">
+            {createdAt ? formatDate(createdAt) : "-"}
+          </p>
         </div>
         <div>
           <p className="font-medium">Updated</p>
-          <p>–</p>
+          <p className="font-merriweather">
+            {updatedAt ? formatDate(updatedAt) : "-"}
+          </p>
         </div>
       </div>
     </div>

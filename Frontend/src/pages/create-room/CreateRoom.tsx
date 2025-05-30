@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { createRoom } from "../../api";
-import RoomForm from "../../components/RoomForm/RoomFrom";
+import RoomForm from "../../components/RoomForm/RoomForm";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const RoomDetailsPage: React.FC = () => {
+  const navigate = useNavigate();
   const [fieldErrors, setFieldErrors] = useState({});
 
   const handleCreate = async (title, description, facilities, image) => {
@@ -22,22 +25,29 @@ const RoomDetailsPage: React.FC = () => {
     try {
       const res = await createRoom(title, description, facilities, image);
       if (res) {
-        alert("Room created successfully!");
-        setFieldErrors({}); // clear errors after success
+        toast.success("Room created successfully!");
+        setFieldErrors({});
+        title = description = "";
+        facilities = [];
+        image = null;
+
+        navigate("/");
       } else {
-        alert("Failed to create room");
+        toast.error("Error occured! Please Try Again");
       }
     } catch (err) {
-      alert("Error creating room");
+      toast.error("Error occured! Please Try Again");
     }
   };
 
   return (
-    <RoomForm
-      onSubmit={handleCreate}
-      isUpdateForm={false}
-      errors={fieldErrors}
-    />
+    <>
+      <RoomForm
+        onSubmit={handleCreate}
+        isUpdateForm={false}
+        errors={fieldErrors}
+      />
+    </>
   );
 };
 

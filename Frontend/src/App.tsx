@@ -3,6 +3,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import RoomDetailsPage from "./pages/create-room/CreateRoom";
 import MainLayout from "./layouts/MainLayout";
 import UpdateRoomPage from "./pages/update-room/UpdateRoom";
+import { Toaster } from "react-hot-toast";
 import "./App.css";
 
 // import About from "./pages/About";
@@ -10,6 +11,7 @@ import "./App.css";
 function App() {
   return (
     <BrowserRouter>
+      <Toaster position="top-right" reverseOrder={false} />
       <MainLayout>
         <Routes>
           <Route path="/" element={<Dashboard />} />

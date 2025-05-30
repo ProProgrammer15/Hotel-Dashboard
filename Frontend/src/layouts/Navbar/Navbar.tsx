@@ -23,7 +23,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const isActive = (itemId: string) => activeItem === itemId;
 
   return (
-    <nav className="hidden md:flex w-64 h-screen bg-dark text-white flex-col">
+    <nav className="hidden md:flex font-merriweather w-64 min-h-screen bg-dark text-secondary flex-col">
       {/* Logo Section */}
       <div className="p-6 border-b border-gray-700">
         <div className="flex items-center space-x-3">

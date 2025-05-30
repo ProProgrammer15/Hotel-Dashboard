@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import type { ChangeEvent } from "react";
-import TextField from "../../components/TextField/TextField";
+import TextField from "../TextField/TextField";
 import { SquarePlusIcon, XIcon, DownloadIcon } from "lucide-react";
-import Dates from "../../components/Dates/Dates";
-import DeleteRoomModal from "../../components/DeleteRoomModal/DeleteRoomModal";
-import Button from "../../components/Buttons/Buttons";
+import Dates from "../Dates/Dates";
+import DeleteRoomModal from "../DeleteRoomModal/DeleteRoomModal";
+import Button from "../Buttons/Buttons";
 import { deleteRoom } from "../../api";
 
 interface RoomFormProps {
@@ -13,6 +12,8 @@ interface RoomFormProps {
     title?: string;
     description?: string;
     facilities?: string[];
+    createdAt?: string;
+    updated?: string;
   };
   errors?: {
     title?: string;
@@ -92,24 +93,24 @@ const RoomForm: React.FC<RoomFormProps> = ({
     <div className="flex flex-col md:flex-row gap-6 p-6 min-h-screen">
       <div className="w-full md:w-2/3">
         <div className="m -2 p-4 min-h-screen">
-          <h1 style={{ fontWeight: "bold", fontSize: 28, marginBottom: 20 }}>
-            Room details
-          </h1>
+          <h1 className="font-bold text-dark text-3xl mb-5">Room details</h1>
           <a
             href="/"
-            className="text-primary font-medium text-sm inline-flex items-center gap-1 hover:underline cursor-pointer"
+            className="text-primary font-sans font-medium text-sm inline-flex items-center gap-1 hover:underline cursor-pointer"
           >
             ← back to rooms
           </a>
           <div className="m-5">
             <div className="container flex justify-between items-center">
-              <h3 className="font-sans">Room details</h3>
+              <h3 className="font-sans text-dark font-light text-2xl m-2">
+                Room details
+              </h3>
               {isUpdateForm && (
                 <button
-                  className="flex items-center text-red-500 font-semibold text-sm border-b-2 border-red-500 hover:opacity-80"
+                  className="flex items-center text-primary font-semibold text-sm border-b-2 border-pr hover:opacity-80"
                   onClick={handleDeleteRoomClick}
                 >
-                  <XIcon className="w-4 h-4 mr-1" />
+                  <XIcon className="w-4 h-4 mr-1 font-sans" />
                   DELETE ROOM
                 </button>
               )}
@@ -219,7 +220,10 @@ const RoomForm: React.FC<RoomFormProps> = ({
         </div>
       </div>
       <div className="w-full md:w-1/3 mt-30 md:mt-30">
-        <Dates />
+        <Dates
+          createdAt={initialData?.createdAt || null}
+          updatedAt={initialData?.updatedAt || null}
+        />
         <div className="mt-5">
           <Button
             label="DOWNLOAD PDF"

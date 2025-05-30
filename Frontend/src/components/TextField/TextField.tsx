@@ -81,7 +81,7 @@ const TextField: React.FC<TextFieldProps> = ({
     <div className="flex flex-col w-full">
       {label && (
         <label
-          className={`mb-1 font-medium flex items-center space-x-2 cursor-pointer ${
+          className={`mb-1 font-light font-sans flex items-center space-x-2 cursor-pointer ${
             type === "file" || type === "button" ? "text-primary" : "text-dark"
           }`}
           htmlFor={type === "file" ? uniqueId : type}
@@ -116,7 +116,7 @@ const TextField: React.FC<TextFieldProps> = ({
         <input
           id={type}
           type="text"
-          className={inputClassNames}
+          className={`${inputClassNames} font-merriweather font-dark font-light`}
           placeholder={placeholder}
           disabled={disabled}
           value={inputValue}
@@ -125,7 +125,7 @@ const TextField: React.FC<TextFieldProps> = ({
       ) : type === "description" ? (
         <textarea
           id={type}
-          className={inputClassNames}
+          className={`${inputClassNames} font-merriweather font-dark font-light`}
           placeholder={placeholder}
           disabled={disabled}
           value={inputValue}

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getRoomById, updateRoom } from "../../api";
-import RoomForm from "../../components/RoomForm/RoomFrom";
+import RoomForm from "../../components/RoomForm/RoomForm";
 import { useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const UpdateRoomPage = () => {
   const { id } = useParams();
@@ -20,6 +21,8 @@ const UpdateRoomPage = () => {
             description: room?.description,
             facilities: room?.facilities,
             image: room?.image,
+            createdAt: room?.created_at,
+            updatedAt: room?.updated_at,
           });
         }
       }
@@ -32,13 +35,13 @@ const UpdateRoomPage = () => {
     try {
       const res = await updateRoom(id, title, description, facilities, image);
       if (res) {
-        alert("Room updated successfully!");
+        toast.success("Room updated Successfully!");
         navigate("/");
       } else {
-        alert("Failed to update room");
+        toast.error("Some occured, Please try again");
       }
     } catch (err) {
-      alert("Error updating room");
+      toast.error("Server Error: " + err);
     }
   };
 
