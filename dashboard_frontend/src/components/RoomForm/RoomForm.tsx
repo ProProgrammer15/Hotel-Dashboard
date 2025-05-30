@@ -216,7 +216,10 @@ const RoomForm: React.FC<RoomFormProps> = ({
             </div>
           </div>
 
-          <Button label="CREATE AND GENERATE PDF" onClick={handleSubmit} />
+          <Button
+            label={showModal ? "UPDATE ROOM" : "CREATE AND GENERATE PDF"}
+            onClick={handleSubmit}
+          />
         </div>
       </div>
       <div className="w-full md:w-1/3 mt-30 md:mt-30">
