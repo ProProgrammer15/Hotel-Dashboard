@@ -9,3 +9,5 @@ python-multipart
 pytest-asyncio
 httpx
 pytest-cov
+pdfkit
+jinja2

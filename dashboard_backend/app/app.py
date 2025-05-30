@@ -47,6 +47,7 @@ def get_application() -> FastAPI:
         on_shutdown=[on_shutdown],
     )
     app.mount("/uploaded_images", StaticFiles(directory="uploaded_images"), name="uploaded_images")
+
     app.add_middleware(CORSMiddleware,
                        allow_origins=['*'],
                        allow_credentials=True,

@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from app.config.deps import get_db
 from app.rooms import services, schemas
-from app.rooms.utils import parse_facilities
+from app.rooms.utils import parse_facilities, generate_room_pdf_from_html
+from fastapi.responses import StreamingResponse
 
 rooms_router = APIRouter(prefix="/rooms", tags=["Rooms"])
 
@@ -70,3 +71,14 @@ async def delete_room(room_id: str, db: Session = Depends(get_db)):
     if not success:
         raise HTTPException(status_code=404, detail="Room not found")
     return {"message": "Room deleted"}
+
+
+@rooms_router.get("/{room_id}/pdf")
+async def get_room_pdf(room_id: str, db: Session = Depends(get_db)):
+    room = await services.get_room(db, room_id)
+    if not room:
+        raise HTTPException(status_code=404, detail="Room not found")
+
+    pdf = generate_room_pdf_from_html(room.title, room.description, room.facilities or [], image_path=room.image)
+
+    return StreamingResponse(pdf, media_type="application/pdf", headers={"Content-Disposition": f"inline; filename=room_{room_id}.pdf"})

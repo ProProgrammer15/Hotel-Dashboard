@@ -13,6 +13,7 @@ services:
     volumes:
       - ./dashboard_backend:/app
       - ./dashboard_backend/hotel_dashboard.db:/app/hotel_dashboard.db
+      - ./dashboard_backend/static:/app/static
 
 
 

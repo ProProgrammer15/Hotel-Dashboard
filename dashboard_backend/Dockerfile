@@ -4,6 +4,9 @@ FROM python:3.11-slim
 RUN apt-get update && apt-get install -y curl && \
     curl -sSL https://github.com/jwilder/dockerize/releases/download/v0.6.1/dockerize-linux-amd64-v0.6.1.tar.gz | tar -xz -C /usr/local/bin
 
+RUN apt-get update && \
+    apt-get install -y wkhtmltopdf libxrender1 libxext6 libfontconfig1 libfreetype6 libjpeg62-turbo && \
+    apt-get clean
 
 # Set the working directory in the container
 WORKDIR /app

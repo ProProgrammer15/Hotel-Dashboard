@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ title }}</title>
+
+  <link rel="stylesheet" href="{{ css_path }}">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Karla:wght@400;700&family=Merriweather:wght@300;400;700&display=swap">
+
+</head>
+<body class="font-sans text-gray-800 bg-white">
+
+
+  <header class="bg-gray-900 py-3">
+    <div class="max-w-6xl mx-auto flex items-center px-6">
+      <img src="{{ logo_path }}" alt="The Hugo Logo" style="height: 60px;" />
+    </div>
+  </header>
+
+
+  <section class="max-w-4xl mx-auto px-6 py-10">
+    <h1 class="text-4xl font-bold mb-4">{{ title }}</h1>
+    <p class="text-lg text-gray-700">
+      {{ description }}
+    </p>
+  </section>
+
+  <!-- Room Image -->
+  {% if room_image_path %}
+  <section class="max-w-4xl mx-auto px-6 pb-10">
+    <img
+      src="{{ room_image_path }}"
+      alt="Room Image"
+      class="rounded-lg w-full object-cover shadow-lg"
+      style="width: 100%; height: auto;"
+    />
+  </section>
+  {% endif %}
+
+  <!-- Facilities -->
+  <section class="max-w-4xl mx-auto px-6 pb-20">
+    <h2 class="text-2xl font-semibold mb-6">Facilities</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
+      <ul class="space-y-2 list-disc list-inside">
+        {% for facility in facilities %}
+        <li>{{ facility }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-200 text-gray-600 text-sm py-6">
+    <div class="max-w-6xl mx-auto flex justify-between px-6">
+      <span>© The Hugo {{ year }}</span>
+      <span>{{ date }}</span>
+    </div>
+  </footer>
+
+</body>
+</html>
