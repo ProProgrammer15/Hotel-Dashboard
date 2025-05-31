@@ -30,8 +30,7 @@ const RoomDetailsPage: React.FC = () => {
         title = description = "";
         facilities = [];
         image = null;
-
-        navigate("/");
+        return res;
       } else {
         toast.error("Error occured! Please Try Again");
       }
