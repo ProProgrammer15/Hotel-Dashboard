@@ -37,7 +37,7 @@ Before running the backend locally, ensure the following are installed:
 
 ```bash
 git clone https://github.com/your-org/hotel-dashboard.git
-cd hotel-dashboard
+cd Hotel-Dashboard
 ```
 
 ### 2. Set Up Python Environment

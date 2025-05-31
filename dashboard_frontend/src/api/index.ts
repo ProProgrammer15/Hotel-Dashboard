@@ -47,7 +47,21 @@ export const createRoom = async (
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      responseType: "blob",
     });
+    console.log(res);
+    const blob = new Blob([res.data], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `room_${title}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
     return res.data;
   } catch (error) {
     console.error("Error creating room:", error);
@@ -76,7 +90,8 @@ export const updateRoom = async (
         "Content-Type": "multipart/form-data",
       },
     });
-    return res.data;
+
+    return res;
   } catch (error) {
     console.error(`Error updating room ${roomId}:`, error);
     return null;
@@ -90,5 +105,27 @@ export const deleteRoom = async (roomId: string) => {
   } catch (error) {
     console.error(`Error deleting room ${roomId}:`, error);
     return null;
+  }
+};
+
+export const fetchRoomPDF = async (roomId: string) => {
+  try {
+    const response = await API.get(`/${roomId}/pdf`, {
+      responseType: "blob",
+    });
+
+    const blob = new Blob([response.data], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `room_${roomId}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.log("Failed to fetch PDF:", error);
   }
 };

@@ -5,7 +5,8 @@ import { SquarePlusIcon, XIcon, DownloadIcon } from "lucide-react";
 import Dates from "../Dates/Dates";
 import DeleteRoomModal from "../DeleteRoomModal/DeleteRoomModal";
 import Button from "../Buttons/Buttons";
-import { deleteRoom } from "../../api";
+import { deleteRoom, fetchRoomPDF } from "../../api";
+import toast from "react-hot-toast";
 
 interface RoomFormProps {
   initialData?: {
@@ -44,6 +45,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
   const [facilities, setFacilities] = useState<string[]>(
     initialData?.facilities || [""]
   );
+  const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
@@ -66,6 +68,13 @@ const RoomForm: React.FC<RoomFormProps> = ({
     });
   };
 
+  const handlePDF = async () => {
+    setDisabled(true);
+    toast.success("Downloading PDF");
+    await fetchRoomPDF(initialData?.id);
+    setDisabled(false);
+  };
+
   const handleDeleteRoomClick = () => {
     setShowModal(true);
   };
@@ -81,12 +90,15 @@ const RoomForm: React.FC<RoomFormProps> = ({
   };
 
   const handleSubmit = async () => {
+    setDisabled(true);
+    toast.success("Room Created, Downloading PDF");
     await onSubmit(
       title,
       description,
       facilities.filter((f) => f.trim() !== ""),
       image
     );
+    setDisabled(false);
   };
 
   return (
@@ -217,8 +229,9 @@ const RoomForm: React.FC<RoomFormProps> = ({
           </div>
 
           <Button
-            label={showModal ? "UPDATE ROOM" : "CREATE AND GENERATE PDF"}
+            label={isUpdateForm ? "UPDATE ROOM" : "CREATE AND GENERATE PDF"}
             onClick={handleSubmit}
+            disabled={disabled}
           />
         </div>
       </div>
@@ -228,14 +241,16 @@ const RoomForm: React.FC<RoomFormProps> = ({
           updatedAt={initialData?.updatedAt || null}
         />
         <div className="mt-5">
-          <Button
-            label="DOWNLOAD PDF"
-            icon={<DownloadIcon />}
-            iconBefore={false}
-            fullWidth={true}
-          >
-            Download PDF
-          </Button>
+          {isUpdateForm && (
+            <Button
+              label="DOWNLOAD PDF"
+              icon={<DownloadIcon />}
+              iconBefore={false}
+              fullWidth={true}
+              onClick={handlePDF}
+              disabled={disabled}
+            />
+          )}
         </div>
       </div>
       <DeleteRoomModal

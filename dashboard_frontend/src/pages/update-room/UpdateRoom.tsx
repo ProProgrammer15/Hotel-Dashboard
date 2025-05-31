@@ -38,7 +38,8 @@ const UpdateRoomPage = () => {
         toast.success("Room updated Successfully!");
         navigate("/");
       } else {
-        toast.error("Some occured, Please try again");
+        // toast.error(res.text);
+        console.log(res);
       }
     } catch (err) {
       toast.error("Server Error: " + err);

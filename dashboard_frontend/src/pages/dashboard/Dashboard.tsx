@@ -81,7 +81,6 @@ export const Dashboard = () => {
                 </td>
                 <td className="py-4 px-6 text-dark">
                   {room.updated_at ? formatDate(room.updated_at) : "–"}
-                  {console.log()}
                 </td>
               </tr>
             ))}
