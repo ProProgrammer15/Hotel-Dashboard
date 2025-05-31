@@ -11,3 +11,4 @@ httpx
 pytest-cov
 pdfkit
 jinja2
+xhtml2pdf

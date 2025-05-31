@@ -11,55 +11,34 @@ This project is a hotel management platform with a modular architecture for back
 - FastAPI
 - SQLAlchemy (ORM)
 - SQLite (local dev)
-- Alembic (DB migrations – optional)
 - Pytest (unit & integration tests)
 - Pydantic & pydantic-settings
-- Aiofiles (for async file handling)
-- Docker (optional setup)
+- Docker
 
 ---
 
 ## ⚙️ Prerequisites
+### 1. **Docker**
+Ensure that you have **Docker** and **Docker Compose** installed to easily run the project in a containerized environment.
 
-Before running the backend locally, ensure the following are installed:
+- **[Docker installation](https://docs.docker.com/get-docker/)**
+- **[Docker Compose installation](https://docs.docker.com/compose/install/)**
 
-- Python 3.10+
-- [Poetry](https://python-poetry.org/docs/) or `pip` (for dependency management)
-- `virtualenv` (optional, recommended)
-- Git
-- Curl (to test APIs optionally)
+### 2. **Python 3.10+**
+Ensure that you have **Python 3.10+** installed for running the project locally.
 
----
 
 ## 🚀 Backend Setup
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/hotel-dashboard.git
+git clone https://github.com/ProProgrammer15/Hotel-Dashboard.git
 cd Hotel-Dashboard
 ```
 
-### 2. Set Up Python Environment
 
-Using Poetry (recommended):
-
-```bash
-poetry install
-poetry shell
-```
-
-Or using pip:
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-```
-
----
-
-### 3. Environment Configuration
+### 2. Environment Configuration
 
 Create a `.env` file in the root directory:
 
@@ -74,13 +53,13 @@ PRODUCTION=False
 
 ---
 
-### 4. Run the Backend Server
+### 3. Run the Backend Server
 
 ```bash
-uvicorn app.app:get_application --reload
+docker-compose up --build
 ```
 
-- Runs on: `http://127.0.0.1:8000`
+- Runs on: `http://0.0.0.0:8000`
 
 ---
 
@@ -88,8 +67,8 @@ uvicorn app.app:get_application --reload
 
 After starting the server, you can access:
 
-- **Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **OpenAPI JSON**: [http://127.0.0.1:8000/openapi.json](http://127.0.0.1:8000/openapi.json)
+- **Swagger UI**: [http://0.0.0.0:8000/docs](http://0.0.0.0:8000/docs)
+- **OpenAPI JSON**: [http://0.0.0.0:8000/openapi.json](http://0.0.0.0:8000/openapi.json)
 
 ---
 
@@ -98,13 +77,13 @@ After starting the server, you can access:
 Run all tests with coverage:
 
 ```bash
-pytest --cov=app --cov-report=term-missing
+docker exec -it <container_name> pytest --cov=app --cov-report=term-missing
 ```
 
 To generate an HTML coverage report:
 
 ```bash
-pytest --cov=app --cov-report=html
+docker exec -it <container_name> pytest --cov=app --cov-report=html
 open htmlcov/index.html
 ```
 
@@ -125,19 +104,18 @@ open htmlcov/index.html
 ## 📂 Project Structure (Backend)
 
 ```
+main.py
+uploaded_images/
+static/
 app/
-├── app.py                  # FastAPI app factory
-├── config/                 # Settings, DB, dependencies
-├── rooms/                  # Room models, schemas, services, routers
-├── tests/                  # Full test suite with coverage
-├── uploaded_images/        # Room image uploads
+├── app.py                  
+├── config/                 
+├── rooms/                  
+├── tests/                  
+├── templates/        
 ```
 
 ---
-
-## 📬 Contact
-
-For issues or contributions, open a GitHub issue or contact the maintainer.
 
 # 🖼️ Hotel Dashboard Platform – Frontend
 
@@ -199,7 +177,7 @@ npm install
 
 Create `.env` in `dashboard_frontend` and paste following:
 
-`VITE_API_BASE_URL=http://localhost:8000`
+`VITE_API_ENDPOINT=http://localhost:8000`
 
 ### 4. Start the Development Server
 
