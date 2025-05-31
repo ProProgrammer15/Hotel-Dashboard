@@ -1,5 +1,5 @@
 # Use an official Node.js base image
-FROM node:18
+FROM node:20
 
 # Set working directory
 WORKDIR /app
@@ -10,6 +10,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 5173
+EXPOSE 3000
 
 CMD ["npm", "run", "dev"]
