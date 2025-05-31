@@ -60,6 +60,7 @@ docker-compose up --build
 ```
 
 - Runs on: `http://0.0.0.0:8000`
+- This will run frontend server as well
 
 ---
 
@@ -159,7 +160,7 @@ dashboard_frontend/
 └── main.tsx # Entry point
 ```
 
-## 🚀 Setup & Installation
+## 🚀 Setup & Installation (For local setup)
 
 ### 1. Clone the Repository
 
