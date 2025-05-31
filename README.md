@@ -7,6 +7,7 @@ This project is a hotel management platform with a modular architecture for back
 ## 📦 Tech Stack
 
 ### Backend
+
 - FastAPI
 - SQLAlchemy (ORM)
 - SQLite (local dev)
@@ -121,12 +122,6 @@ open htmlcov/index.html
 
 ---
 
-## 🖼️ Frontend
-
-> 🔧 _Coming Soon: Instructions for setting up and running the frontend._
-
----
-
 ## 📂 Project Structure (Backend)
 
 ```
@@ -143,3 +138,81 @@ app/
 ## 📬 Contact
 
 For issues or contributions, open a GitHub issue or contact the maintainer.
+
+# 🖼️ Hotel Dashboard Platform – Frontend
+
+This is the **frontend** for the Hotel Dashboard Platform, developed in **React with TypeScript**, styled using **TailwindCSS**, and integrated with **Storybook** for component-driven development. It connects with the FastAPI backend to manage rooms and related data.
+
+---
+
+## 📦 Tech Stack
+
+- React (with TypeScript)
+- TailwindCSS
+- React Router
+- Axios (for API integration)
+- Storybook (for UI component development and preview)
+- Vite (for fast bundling)
+
+---
+
+## ⚙️ Prerequisites
+
+Ensure the following tools are installed:
+
+- Node.js 18+
+- npm (comes with Node)
+- Git
+- Code Editor (VSCode recommended)
+
+---
+
+## 📘 Directory Structure
+
+```
+dashboard_frontend/
+└── src/
+├── api/ # Axios instances & API services
+├── components/ # Reusable components (buttons, modals, etc.)
+├── layouts/ # App layout wrappers (navbars)
+├── pages/ # Route-based pages (e.g., RoomList, AddRoom)
+├── utils/ # Helper functions, constants
+├── App.tsx # Root component
+└── main.tsx # Entry point
+```
+
+## 🚀 Setup & Installation
+
+### 1. Clone the Repository
+
+```bash
+cd dashboard_frontend
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Environment Variable
+
+Create `.env` in `dashboard_frontend` and paste following:
+
+`VITE_API_BASE_URL=http://localhost:8000`
+
+### 4. Start the Development Server
+
+```bash
+npm run dev
+```
+
+App will run on: `http://localhost:5173/` (default Vite port)
+
+## 🧪 Storybook – Component Preview
+
+````bash
+npm run storybook```
+
+Opens at: `http://localhost:6006/
+````
