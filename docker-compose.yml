@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   dashboard_backend:
@@ -15,5 +15,17 @@ services:
       - ./dashboard_backend/hotel_dashboard.db:/app/hotel_dashboard.db
       - ./dashboard_backend/static:/app/static
 
-
-
+  dashboard_frontend:
+    build:
+      context: ./dashboard_frontend
+      dockerfile: Dockerfile
+    container_name: dashboard_frontend
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./dashboard_frontend/.env
+    depends_on:
+      - dashboard_backend
+    volumes:
+      - ./dashboard_frontend:/app
+      - /app/node_modules

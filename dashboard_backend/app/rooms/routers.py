@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, Form, status, File
 from sqlalchemy.orm import Session
 from typing import List, Optional
+import json
 from app.config.deps import get_db
 from app.rooms import services, schemas
 from app.rooms.utils import parse_facilities, generate_room_pdf_from_html
@@ -18,14 +19,18 @@ async def create_room(
         db: Session = Depends(get_db)
 ):
     facilities_list = await parse_facilities(facilities)
-
     data = schemas.RoomBase(
         title=title,
         description=description,
         facilities=facilities_list
     )
+    room = await services.create_room(db, data, image)
+    print(facilities, facilities.strip())
+    print("facilities")
+    facilities_list = json.loads(facilities)
 
-    return await services.create_room(db, data, image)
+    pdf = generate_room_pdf_from_html(title, description, facilities_list, room.image)
+    return StreamingResponse(pdf, media_type="application/pdf", headers={"Content-Disposition": f"inline; filename=room_{room.id}.pdf"})
 
 
 @rooms_router.get("/", response_model=List[schemas.RoomOut])
