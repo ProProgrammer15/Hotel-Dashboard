@@ -73,17 +73,23 @@ const RoomPDF = forwardRef<HTMLDivElement, RoomPDFProps>(
           <h2 className="text-2xl font-merriweather font-semibold mb-3">
             Facilities
           </h2>
-          <div className="grid grid-cols-2 gap-6 text-sm text-dark">
-            <ul className="list-disc list-inside space-y-1">
+          <div className="grid grid-cols-2 gap-6 text-sm text-dark font-merriweather">
+            <div className="space-y-2">
               {firstColumn.map((item, i) => (
-                <li key={i}>{item}</li>
+                <div key={i} className="flex items-start gap-3">
+                  <span className="mt-[4px] text-[18px] leading-none">•</span>
+                  <span>{item}</span>
+                </div>
               ))}
-            </ul>
-            <ul className="list-disc font-merriweather">
+            </div>
+            <div className="space-y-2">
               {secondColumn.map((item, i) => (
-                <li key={i}>{item}</li>
+                <div key={i} className="flex items-start gap-3">
+                  <span className="mt-[4px] text-[18px] leading-none">•</span>
+                  <span>{item}</span>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         </div>
 
