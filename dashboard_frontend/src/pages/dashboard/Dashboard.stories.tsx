@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import React from "react";
 import Dashboard from "./Dashboard";
-import useRoomStore from "../../stores/useDashboardStore";
-
+import { MemoryRouter } from "react-router-dom";
 const mockRooms = [
   {
     id: 1,
@@ -22,22 +20,19 @@ const mockRooms = [
   },
 ];
 
-const ZustandProviderDecorator = (Story: React.FC) => {
-  // Set mock rooms in the Zustand store state before rendering the story
-  useRoomStore.setState({ rooms: mockRooms });
-  return <Story />;
-};
-
-const meta: Meta = {
+const meta: Meta<typeof Dashboard> = {
   title: "Layouts/Dashboard",
   component: Dashboard,
   tags: ["autodocs"],
-  decorators: [ZustandProviderDecorator],
 };
 
 export default meta;
 type Story = StoryObj<typeof Dashboard>;
 
 export const Default: Story = {
-  render: () => <Dashboard />,
+  render: () => (
+    <MemoryRouter>
+      <Dashboard />
+    </MemoryRouter>
+  ),
 };

@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import TextField from "../TextField/TextField";
 import { SquarePlusIcon, XIcon, DownloadIcon } from "lucide-react";
 import Dates from "../Dates/Dates";
 import DeleteRoomModal from "../DeleteRoomModal/DeleteRoomModal";
 import Button from "../Buttons/Buttons";
-import { deleteRoom, fetchRoomPDF } from "../../api";
+import { deleteRoom } from "../../api";
 import toast from "react-hot-toast";
+import RoomPDF from "../RoomPDF/RoomPDF";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas-pro";
 
 interface RoomFormProps {
   initialData?: {
@@ -48,6 +51,8 @@ const RoomForm: React.FC<RoomFormProps> = ({
   const [disabled, setDisabled] = useState(false);
   const [image, setImage] = useState<File | null>(null);
   const [showModal, setShowModal] = useState(false);
+  const [roomData, setRoomData] = useState(initialData || null);
+  const pdfRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -69,10 +74,28 @@ const RoomForm: React.FC<RoomFormProps> = ({
   };
 
   const handlePDF = async () => {
+    if (!pdfRef.current) return;
     setDisabled(true);
-    toast.success("Downloading PDF");
-    await fetchRoomPDF(initialData?.id);
-    setDisabled(false);
+
+    try {
+      const canvas = await html2canvas(pdfRef.current, {
+        scale: 2,
+        useCORS: true,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${initialData?.title?.replace(/\s+/g, "_") || "room"}.pdf`);
+    } catch (err) {
+      toast.error("PDF generation failed");
+    } finally {
+      setDisabled(false);
+    }
   };
 
   const handleDeleteRoomClick = () => {
@@ -91,14 +114,37 @@ const RoomForm: React.FC<RoomFormProps> = ({
 
   const handleSubmit = async () => {
     setDisabled(true);
-    toast.success("Room Created, Downloading PDF");
-    await onSubmit(
-      title,
-      description,
-      facilities.filter((f) => f.trim() !== ""),
-      image
-    );
-    setDisabled(false);
+    try {
+      const result = await onSubmit(
+        title,
+        description,
+        facilities.filter((f) => f.trim() !== ""),
+        image
+      );
+      setRoomData(result);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      toast.success("Room Created, Generating PDF...");
+      if (pdfRef.current) {
+        const canvas = await html2canvas(pdfRef.current, {
+          scale: 2,
+          useCORS: true,
+        });
+
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("p", "mm", "a4");
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${title.replace(/\s+/g, "_") || "room"}.pdf`);
+      }
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to create room or generate PDF");
+    } finally {
+      setDisabled(false);
+    }
   };
 
   return (
@@ -258,6 +304,19 @@ const RoomForm: React.FC<RoomFormProps> = ({
         onOk={handleModalOk}
         onCancel={handleModalCancel}
       />
+
+      <div
+        ref={pdfRef}
+        className="absolute top-0 -left-[9999px] w-[800px] bg-white text-black"
+        style={{ color: "#000", backgroundColor: "#fff" }} // fallback override
+      >
+        <RoomPDF
+          title={title}
+          description={description}
+          facilities={facilities}
+          image={roomData?.image}
+        />
+      </div>
     </div>
   );
 };

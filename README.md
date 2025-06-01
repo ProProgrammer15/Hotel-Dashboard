@@ -18,15 +18,17 @@ This project is a hotel management platform with a modular architecture for back
 ---
 
 ## ⚙️ Prerequisites
+
 ### 1. **Docker**
+
 Ensure that you have **Docker** and **Docker Compose** installed to easily run the project in a containerized environment.
 
 - **[Docker installation](https://docs.docker.com/get-docker/)**
 - **[Docker Compose installation](https://docs.docker.com/compose/install/)**
 
 ### 2. **Python 3.10+**
-Ensure that you have **Python 3.10+** installed for running the project locally.
 
+Ensure that you have **Python 3.10+** installed for running the project locally.
 
 ## 🚀 Backend Setup
 
@@ -36,7 +38,6 @@ Ensure that you have **Python 3.10+** installed for running the project locally.
 git clone https://github.com/ProProgrammer15/Hotel-Dashboard.git
 cd Hotel-Dashboard
 ```
-
 
 ### 2. Environment Configuration
 
@@ -109,11 +110,11 @@ main.py
 uploaded_images/
 static/
 app/
-├── app.py                  
-├── config/                 
-├── rooms/                  
-├── tests/                  
-├── templates/        
+├── app.py
+├── config/
+├── rooms/
+├── tests/
+├── templates/
 ```
 
 ---
@@ -186,12 +187,20 @@ Create `.env` in `dashboard_frontend` and paste following:
 npm run dev
 ```
 
-App will run on: `http://localhost:5173/` (default Vite port)
+App will run on: `http://localhost:3000/` (default Vite port)
 
 ## 🧪 Storybook – Component Preview
 
-````bash
+`````bash
 npm run storybook```
 
 Opens at: `http://localhost:6006/
-````
+
+
+## 🧪 Cypress Testing
+
+For functional testing of components go to `dashboard_frontend/`:
+
+````bash
+npx cypress open
+`````

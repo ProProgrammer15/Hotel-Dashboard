@@ -8,13 +8,13 @@ const Dates: React.FC = ({ createdAt, updatedAt }) => {
       <div className="flex justify-between text-sm  space-y-2">
         <div>
           <p className="font-medium">Created</p>
-          <p className="font-merriweather">
+          <p id="created_at_date" className="font-merriweather">
             {createdAt ? formatDate(createdAt) : "-"}
           </p>
         </div>
         <div>
           <p className="font-medium">Updated</p>
-          <p className="font-merriweather">
+          <p id="updated_at_date" className="font-merriweather">
             {updatedAt ? formatDate(updatedAt) : "-"}
           </p>
         </div>
