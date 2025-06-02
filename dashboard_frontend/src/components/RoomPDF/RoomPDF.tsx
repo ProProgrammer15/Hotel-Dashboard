@@ -73,7 +73,7 @@ const RoomPDF = forwardRef<HTMLDivElement, RoomPDFProps>(
           <h2 className="text-2xl font-merriweather font-semibold mb-3">
             Facilities
           </h2>
-          <div className="grid grid-cols-2 gap-6 text-sm text-dark font-merriweather">
+          <div className="grid grid-cols-2 gap-6 font-medium text-dark font-merriweather">
             <div className="space-y-2">
               {firstColumn.map((item, i) => (
                 <div key={i} className="flex items-start gap-3">
