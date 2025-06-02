@@ -35,9 +35,12 @@ const RoomPDF = forwardRef<HTMLDivElement, RoomPDFProps>(
     }, [image]);
 
     return (
-      <div ref={ref} className="w-[800px] font-sans bg-white text-dark">
+      <div
+        ref={ref}
+        className="w-[800px] min-h-[1123px] font-sans bg-white text-dark flex flex-col justify-between"
+      >
         {/* Header Bar */}
-        <div className="bg-[#3c3c3c] text-white px-6 py-4 flex items-center">
+        <div className="bg-dark text-white px-6 py-2 flex items-center">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 border border-white text-center font-bold text-xl">
               H
@@ -59,17 +62,17 @@ const RoomPDF = forwardRef<HTMLDivElement, RoomPDFProps>(
 
         {/* Image */}
         {image && (
-          <div className="px-10 m-6">
+          <div className="m-3">
             <img
               src={base64Image}
               alt="Room"
-              className="w-full h-auto object-cover rounded-md border border-gray-200"
+              className="w-full h-auto object-cover rounded-md border border-white"
             />
           </div>
         )}
 
         {/* Facilities */}
-        <div className="px-10 pb-10 mb-6">
+        <div className="m-3">
           <h2 className="text-2xl font-merriweather font-semibold mb-3">
             Facilities
           </h2>
@@ -94,7 +97,7 @@ const RoomPDF = forwardRef<HTMLDivElement, RoomPDFProps>(
         </div>
 
         {/* Footer */}
-        <div className="bg-[#e2dfdc] text-xs text-dark font-merriweather px-10 py-3 flex justify-between items-center mt-10">
+        <div className="bg-neutral text-xs text-dark font-merriweather px-10 py-3 flex justify-between items-center mt-auto">
           <span>© The Hugo 2025</span>
           <span>{today}</span>
         </div>

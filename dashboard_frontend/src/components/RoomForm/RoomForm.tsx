@@ -112,7 +112,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
     setShowModal(false);
   };
 
-  const handleSubmit = async (isCreated:boolean = false) => {
+  const handleSubmit = async (isCreated: boolean = false) => {
     setDisabled(true);
     try {
       const result = await onSubmit(
@@ -121,12 +121,13 @@ const RoomForm: React.FC<RoomFormProps> = ({
         facilities.filter((f) => f.trim() !== ""),
         image
       );
+      if (!result) return;
       setRoomData(result);
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       if (isCreated) {
         toast.success("Room Created, Generating PDF...");
-      };
+      }
       if (pdfRef.current) {
         const canvas = await html2canvas(pdfRef.current, {
           scale: 2,
@@ -279,7 +280,7 @@ const RoomForm: React.FC<RoomFormProps> = ({
 
           <Button
             label={isUpdateForm ? "UPDATE ROOM" : "CREATE AND GENERATE PDF"}
-            onClick={() => isUpdateForm ? handleSubmit() : handleSubmit(true)}
+            onClick={() => (isUpdateForm ? handleSubmit() : handleSubmit(true))}
             disabled={disabled}
           />
         </div>
