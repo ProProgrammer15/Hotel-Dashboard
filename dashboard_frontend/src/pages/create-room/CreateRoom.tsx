@@ -5,16 +5,22 @@ import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const RoomDetailsPage: React.FC = () => {
-  const navigate = useNavigate();
   const [fieldErrors, setFieldErrors] = useState({});
 
   const handleCreate = async (title, description, facilities, image) => {
     const newErrors: Record<string, string> = {};
 
     if (!title) newErrors.title = "Title is required";
-    if (!description) newErrors.description = "Description is required";
-    if (!facilities || facilities.length === 0)
-      newErrors.facilities = "Facilities are required";
+    if (!description || description.trim() === "") {
+      newErrors.description = "Description is required";
+    } else if (description.trim().split(/\s+/).length > 100) {
+      newErrors.description = "Description cannot be more than 100 words";
+    }
+    if (!facilities || facilities.length === 0) {
+      newErrors.facilities = "At least one facility is required";
+    } else if (facilities.length > 10) {
+      newErrors.facilities = "You can add up to 20 facilities only";
+    }
     if (!image) newErrors.image = "Image is required";
 
     if (Object.keys(newErrors).length > 0) {
